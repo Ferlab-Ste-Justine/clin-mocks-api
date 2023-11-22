@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  local:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3001:3001'
+    mem_limit: "256m"
+    mem_reservation: "128m"
+    cpus: 2
+    network_mode: host
+    healthcheck:
+      test: curl -Is localhost:8080/health | head -n 1 | grep 200 || exit 1
+      interval: 10s
+      timeout: 2s
+      retries: 10
