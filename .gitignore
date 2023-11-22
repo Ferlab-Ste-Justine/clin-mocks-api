@@ -1,5 +1,6 @@
 # Ignore node_modules directory
 node_modules/
+coverage/
 
 # Ignore .env file (contains sensitive information, should not be committed)
 .env

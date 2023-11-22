@@ -17,11 +17,12 @@ logger.debug('Add handler: compression');
 app.use(compression());
 logger.debug('Add handler: cors');
 app.use(cors());
+
+// use for k8s health check, before logger
+app.get('/health', (req, res) => res.status(200).json({ status: 'UP' }));
+
 logger.debug('Add handler: request logger');
 app.use(requestLogger);
-
-// use for k8s health check
-app.get('/health', (req, res) => res.status(200).json({ status: 'UP' }));
 
 logger.info('Add mocks endpoints: Sample');
 app.use('/api/sample', sampleMocks);
@@ -34,6 +35,10 @@ app.use(responseLogger);
 logger.debug('Add handler: global error');
 app.use(globalErrorHandler);
 
-app.listen(PORT, () => {
-    logger.info(`Server is running on port ${PORT}`);
-});
+if (process.env['NODE_ENV'] !== 'test') {
+    app.listen(PORT, () => {
+        logger.info(`Server is running on port ${PORT}`);
+    });
+}
+
+export default app;
