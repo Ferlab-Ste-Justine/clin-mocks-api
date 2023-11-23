@@ -15,6 +15,10 @@ logger.info('Add mocks endpoints: MyAPI');
 app.use('/api/sample', myApiMocks);
 ...
 ```
+- be sure to have a valid `.env` file
+```
+cp .env.example .env
+```
 - run the mocks API in `dev` mode
 ```
 npm run start

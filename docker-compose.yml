@@ -5,7 +5,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3001:3001'
+      - 3001:3001
+    environment:
+      - PORT=3001
+      - LOG_LEVEL=info
     mem_limit: "256m"
     mem_reservation: "128m"
     cpus: 2

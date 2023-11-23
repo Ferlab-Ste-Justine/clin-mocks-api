@@ -1,8 +1,9 @@
 import winston, { format } from 'winston';
 import { LOG_LEVEL } from './config.js';
 
-// eslint-disable-next-line prettier/prettier
-const loggerFormat = format.printf(({ level, message, timestamp }) => `${timestamp} ${level.toUpperCase()} : ${message}`);
+const loggerFormat = format.printf(
+    ({ level, message, timestamp }) => `${timestamp} ${level.toUpperCase()} : ${message}`,
+);
 
 const logger = winston.createLogger({
     level: LOG_LEVEL,
