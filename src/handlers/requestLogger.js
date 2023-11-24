@@ -8,7 +8,6 @@ const logIfPresent = (name, obj) => {
 
 const handler = (req, res, next) => {
     logger.info(`=> [${req.method}] ${req.url}`);
-    //logIfPresent('    └> Query', req.query); seems to be part of req.url to enabled if not in QA
     logIfPresent('    └> Body', req.body);
     next();
 };
