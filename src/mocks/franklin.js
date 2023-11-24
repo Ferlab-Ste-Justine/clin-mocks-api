@@ -33,7 +33,11 @@ franklin.post('/v1/analyses/create', (req, res, next) => {
             runningAnalyses[a.id] = a
             ids.push(a.id)
         });
-        res.json({analysis_ids: ids});
+        if (ids.length > 1) {
+            res.json({analysis_ids: ids});
+        } else {
+            res.json(ids); // solo
+        }
     }
     next();
 });
