@@ -47,9 +47,9 @@ franklin.post('/v1/analyses/create', (req, res, next) => {
             runningAnalyses[a.id] = a
             ids.push(a.id)
         });
-        const familyStudy = get(req.body, 'family_analyses[0].case_name')
-        if (familyStudy) {
-            ids.push(createFamilyAnalysisForTrio(familyStudy, now))  // create a custom family analysis
+        const familyAnalysis = get(req.body, 'family_analyses[0].case_name')
+        if (familyAnalysis) {
+            ids.push(createFamilyAnalysis(familyAnalysis, now))  // create a custom family analysis
         }
         if (ids.length > 1) {
             res.json({analysis_ids: ids});
@@ -97,11 +97,11 @@ franklin.get('/v2/analysis/variants/snp', (req, res, next) => {
     next();
 });
 
-const createFamilyAnalysisForTrio = (familyStudy, date) => {
+const createFamilyAnalysis = (name, date) => {
     const analysis = {
         id: ++Object.keys(runningAnalyses).length,
         sample_data:{
-            sample_name: familyStudy,
+            sample_name: name,
         },
         created_at: date,
         ready_at: createRandomReadyAtDate(date)
