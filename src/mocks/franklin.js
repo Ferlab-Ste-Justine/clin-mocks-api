@@ -47,6 +47,7 @@ franklin.post('/v1/analyses/create', (req, res, next) => {
             ids.push(a.id)
         });
         if (ids.length > 1) {
+            ids.push(createFamilyAnalysisForTrio(now))
             res.json({analysis_ids: ids});
         } else {
             res.json(ids); // solo
@@ -91,6 +92,19 @@ franklin.get('/v2/analysis/variants/snp', (req, res, next) => {
     }
     next();
 });
+
+const createFamilyAnalysisForTrio = (date) => {
+    const analysis = {
+        id: ++Object.keys(runningAnalyses).length,
+        sample_data:{
+            sample_name: 'family',
+        },
+        created_at: date,
+        ready_at: createRandomReadyAtDate(date)
+    };
+    runningAnalyses[analysis.id] = analysis
+    return analysis.id
+}
 
 const createRandomReadyAtDate = (from) => {
     const randomSeconds = (Math.floor(Math.random() * readySettings.max) + readySettings.min) * 1000 
