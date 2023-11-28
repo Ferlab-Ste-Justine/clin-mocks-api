@@ -1,4 +1,4 @@
-[
+export default [
     {
         "variant": {
             "chromosome": "chr16",

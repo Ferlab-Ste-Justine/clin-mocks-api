@@ -1,5 +1,5 @@
 import express from 'express';
-import fakeAnalysisJSON from './fakeAnalysis.json' assert { type: "json" }; 
+import fakeAnalysisJSON from './fakeAnalysis.js';
 
 /**
  * https://api-docs.genoox.com/#2a24bb66-846d-4a97-8b53-6f283f8b51e1
