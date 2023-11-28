@@ -1,5 +1,6 @@
 import express from 'express';
 import fakeAnalysisJSON from './fakeAnalysis.js';
+import get from 'lodash/get.js';
 
 /**
  * https://api-docs.genoox.com/#2a24bb66-846d-4a97-8b53-6f283f8b51e1
@@ -46,8 +47,11 @@ franklin.post('/v1/analyses/create', (req, res, next) => {
             runningAnalyses[a.id] = a
             ids.push(a.id)
         });
+        const familyAnalysis = get(req.body, 'family_analyses[0].case_name')
+        if (familyAnalysis) {
+            ids.push(createFamilyAnalysis(familyAnalysis, now))  // create a custom family analysis
+        }
         if (ids.length > 1) {
-            ids.push(createFamilyAnalysisForTrio(now))
             res.json({analysis_ids: ids});
         } else {
             res.json(ids); // solo
@@ -93,11 +97,11 @@ franklin.get('/v2/analysis/variants/snp', (req, res, next) => {
     next();
 });
 
-const createFamilyAnalysisForTrio = (date) => {
+const createFamilyAnalysis = (name, date) => {
     const analysis = {
         id: ++Object.keys(runningAnalyses).length,
         sample_data:{
-            sample_name: 'family',
+            sample_name: name,
         },
         created_at: date,
         ready_at: createRandomReadyAtDate(date)
