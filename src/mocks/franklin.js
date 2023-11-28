@@ -1,4 +1,5 @@
 import express from 'express';
+import fakeAnalysisJSON from './fakeAnalysis.json' assert { type: "json" }; 
 
 /**
  * https://api-docs.genoox.com/#2a24bb66-846d-4a97-8b53-6f283f8b51e1
@@ -55,12 +56,12 @@ franklin.post('/v1/analyses/create', (req, res, next) => {
 });
 
 franklin.post('/v1/analyses/status', (req, res, next) => {
-    const status = [];
     if (checkAuth(req, res)) {
+        const status = [];
         req.body.analysis_ids.forEach(id => {
             const a = runningAnalyses[id]
             if (!a) {
-                res.status(404).send('unknown analysis ' + id);
+                res.status(404).send('unknown analysis: ' + id);
             } else {
                 status.push({
                     id: a.id,
@@ -72,6 +73,21 @@ franklin.post('/v1/analyses/status', (req, res, next) => {
             }
         })
         res.json(status);
+    }
+    next();
+});
+
+franklin.get('/v2/analysis/variants/snp', (req, res, next) => {
+    if (checkAuth(req, res)) {
+        const id = req.query.analysis_id
+        const a = runningAnalyses[id]
+        if (!a) {
+            res.status(404).send('unknown analysis: ' + id);
+        } else if (getAnalysisStatus(a) != 'READY'){
+            res.status(400).send('analysis not ready: ' + id);
+        } else {
+            res.json(fakeAnalysisJSON);
+        }
     }
     next();
 });
