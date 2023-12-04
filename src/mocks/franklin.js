@@ -51,11 +51,7 @@ franklin.post('/v1/analyses/create', (req, res, next) => {
         if (familyAnalysis) {
             ids.push(createFamilyAnalysis(familyAnalysis, now))  // create a custom family analysis
         }
-        if (ids.length > 1) {
-            res.json({analysis_ids: ids});
-        } else {
-            res.json(ids); // solo
-        }
+        res.json(ids);
     }
     next();
 });
